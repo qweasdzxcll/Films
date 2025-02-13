@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { BASE_URL } from '../constants/constants'
+import { FILMS_URL } from '../constants/constants'
 import { IFilms } from '../constants/types'
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
 export const getFilms = (): Promise<IFilms[]> => {
-    return axios.get(`${BASE_URL}/films/`)
+    return axios.get(FILMS_URL)
         .then(res => {
             return res.data
         })
@@ -13,11 +13,11 @@ export const getFilms = (): Promise<IFilms[]> => {
 export const getRTKFilms = createApi({
     reducerPath: 'films',
     baseQuery: retry(fetchBaseQuery({
-        baseUrl: BASE_URL
+        baseUrl: FILMS_URL
     })),
     endpoints: (builder) => ({
         getAllFilms: builder.query<IFilms[], void>({
-            query: () => '/films/'
+            query: () => ''
         })
     })
 })

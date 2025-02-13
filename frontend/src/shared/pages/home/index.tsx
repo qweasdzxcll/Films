@@ -1,21 +1,44 @@
-import { IFilms } from '../../constants/types'
-import { useQuery } from '@tanstack/react-query'
-import { getFilms } from '../../api/api'
-import Loader from '../../ui/components/loader'
-import FilmCard from "../../ui/filmCard"
-import { useGetAllFilmsQuery } from '../../api/api'
+import { IActor } from '../../constants/types'
+import { useState } from 'react'
+import { ACTORS_URL } from '../../constants/constants'
+import { ChangeEvent, FormEvent } from 'react'
 
 function Home() {
 
-  const { data: filmsData, isLoading } = useGetAllFilmsQuery()
 
-  if (isLoading) return <Loader />
+  const [ formData, setFormData ] = useState<IActor>({
+    firstname: '',
+    lastname: ''
+  })
+
+  const changeForm = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
+  const submitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    fetch(ACTORS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+  }
 
   return (
     <>
-      {filmsData &&
-        filmsData.map(film => <FilmCard key={film.title} item={film} />)
-      }
+      <form method="post" onSubmit={submitForm}>
+        <label htmlFor="firstname">FIRSTNAME</label>
+        <input type="text" name="firstname" id="firstname" value={formData.firstname} onChange={changeForm} />
+        <label htmlFor="lastname">LASTNAME</label>
+        <input type="text" name="lastname" id="lastname" value={formData.lastname} onChange={changeForm} />
+        <input type="submit" value="Send.." id="submit" style={{ cursor: 'pointer' }} />
+      </form>
     </>
   )
 }

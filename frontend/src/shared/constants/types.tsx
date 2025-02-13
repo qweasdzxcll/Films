@@ -9,3 +9,8 @@ export interface IFilms {
     preview: string
     genres: number[]
 }
+
+export interface IActor {
+    firstname: string
+    lastname: string
+}
