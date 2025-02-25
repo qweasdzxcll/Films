@@ -24,7 +24,8 @@ function Home() {
     fetch(ACTORS_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Token 8811be43b65c4076cc07985d4e8bd3cd69b3c327'
       },
       body: JSON.stringify(formData)
     })

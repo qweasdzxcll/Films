@@ -21,7 +21,9 @@ class Film(models.Model):
 
     preview = models.ImageField(
         verbose_name='Превью',
-        upload_to='preview/%Y/%m/%d'
+        upload_to='preview/%Y/%m/%d',
+        null=True,
+        blank=True
     )
 
     description = models.TextField(
@@ -41,23 +43,29 @@ class Film(models.Model):
         related_name='actors'
     )
 
-    genres = models.CharField(
+    genre = models.IntegerField(
         verbose_name='Жанр',
-        max_length=128,
         choices=(
-            ('Мультфильм', 'Мультфильм'),
-            ('Фильм', 'Фильм'),
-            ('Сериал', 'Сериал'),
-            ('Мультсериал', 'Мультсериал'),
-            ('Аниме', 'Аниме')
+            (1, 'Мультфильм'),
+            (2, 'Фильм'),
+            (3, 'Сериал'),
+            (4, 'Мультсериал'),
+            (5, 'Аниме')
         )
     )
 
-    rating = models.DecimalField(
+    average_rating = models.FloatField(
         verbose_name='Рейтинг',
-        max_digits=2,
-        decimal_places=0
+        default=0.0
     )
+
+    def update_average_rating(self):
+        ratings = self.rating_set.all()
+        if ratings.exists():
+            self.average_rating = sum(rating.rating for rating in ratings) / ratings.count()
+        else:
+            self.average_rating = 0.0
+        self.save()
 
     def __str__(self):
         return self.title
@@ -82,3 +90,24 @@ class Review(models.Model):
 
     def __str__(self):
         return self.film
+    
+class Rating(models.Model):
+    film = models.ForeignKey(
+        Film,
+        verbose_name='Фильм',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+    rating = models.IntegerField(
+        verbose_name='Рейтинг',
+        choices=(
+            [(i ,i) for i in range(11)]
+        )
+    )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.film:
+            self.film.update_average_rating()

@@ -17,5 +17,10 @@ class User(AbstractUser):
         )
     )
 
-    def __str__(self):
-        return self.phone
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['username']
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.phone
+            super().save(*args, **kwargs)
