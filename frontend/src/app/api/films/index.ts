@@ -1,0 +1,1 @@
+export { useGetAllFilms } from './getAllFilms'

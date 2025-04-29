@@ -1,19 +1,12 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import { client } from './shared/api/query-client.tsx'
+import App from './app/App.tsx'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { store } from './shared/store/store.tsx'
-import { Provider } from 'react-redux'
+import { client } from './app/client/client.ts'
 
 createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
-    <QueryClientProvider client={client}>
-      <StrictMode>
-        <App />
-      </StrictMode>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </Provider>
+  <QueryClientProvider client={client}>
+    <App />
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 )

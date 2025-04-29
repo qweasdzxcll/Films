@@ -18,7 +18,7 @@ class RegisterUserAPIView(generics.ListCreateAPIView):
 class LoginUserAPIView(APIView):
     serializer_class = UserSerializer
     def post(self, request, *args, **kwargs):
-        phone = request.data.GET.get('phone')
+        phone = request.data.get('phone')
         if phone:
             user = User.objects.get(phone=phone)
         token, _ = Bearer.objects.get_or_create(user=user)

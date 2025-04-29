@@ -8,15 +8,6 @@ class User(AbstractUser):
         unique=True
     )
 
-    is_status = models.PositiveSmallIntegerField(
-        verbose_name='Статус',
-        default=0,
-        choices=(
-            (0, 'Пользователь'),
-            (1, 'Администратор')
-        )
-    )
-
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['username']
 

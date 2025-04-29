@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    width: 500px;
+    margin: 20px auto;
+    font-size: 20px;
+    justify-content: space-between;
+
+    .item,
+    .active {
+        text-decoration: none;
+        padding-bottom: 2px;
+        font-weight: 700;
+    }
+
+    .item {
+        &:hover {
+            border-bottom: 2px solid white;
+        }
+    }
+
+    .active {
+        color: rgb(58, 151, 232);
+        border-bottom: 2px solid rgb(58, 151, 232);
+    }
+}
